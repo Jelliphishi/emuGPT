@@ -17,6 +17,15 @@ Notes:
 
     CSV Import Help: https://medium.com/@vijayveeranar/unleashing-the-power-of-langchain-and-openai-gpt-conversing-with-csv-files-3e500cc6bb50
 
+
+
+
+Thought Process on Model Architecture:
+    1. Using CSV_agent to find semantic similarity may not be the most efficient. It just takes the input and searches the data frame to see if it contains the string. 
+        a. What if we made it generate semantically similar strings to the one provided? It may not be efficient but it could work? 
+    2. Instead, what if we used cosine similarity to easily find situations where they were similar? Approach #1 may be slow for larger datasets
+    
+
     
 
 

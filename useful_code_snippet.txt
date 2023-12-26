@@ -1,0 +1,22 @@
+            # df_incoming = df[df['Type'] == 'Incoming']
+
+            # #This is not necessary but just for sake of simplicity
+            # df_incoming.drop(['Type', 'Attachment', 'Attachment type'], axis=1, inplace=True)
+            # df_outgoing = df[df['Type'] == 'Outgoing']
+            # df_outgoing.drop(['Type', 'Attachment', 'Attachment type'], axis=1, inplace=True)
+
+            # temp_file_path_incoming, temp_file_path_outgoing = None, None
+
+            # with tempfile.NamedTemporaryFile(mode='w+', suffix=".csv", delete=False) as temp_file_incoming:
+            #     df_incoming.to_csv(temp_file_incoming, index=False)
+            #     temp_file_incoming.flush()
+            #     temp_file_path_incoming = temp_file_incoming.name
+
+            # with tempfile.NamedTemporaryFile(mode='w+', suffix=".csv", delete=False) as temp_file_outgoing:
+            #     df_outgoing.to_csv(temp_file_outgoing, index=False)
+            #     temp_file_outgoing.flush()
+            #     temp_file_path_outgoing = temp_file_outgoing.name
+
+
+
+            #df_incoming, df_outgoing, file_path_incoming, file_path_outgoing, sender_name = process_file(file)

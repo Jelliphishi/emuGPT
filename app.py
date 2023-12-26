@@ -8,6 +8,8 @@ import streamlit as st
 #Import OpenAI as main LLM service 
 from langchain.llms import OpenAI
 from langchain.agents import create_csv_agent
+from langchain.prompts import PromptTemplate
+from langchain.chains import LLMChain
 
 from langchain.agents.agent_types import AgentType
 
@@ -23,6 +25,8 @@ st.title("Emu-GEN")
 
 file = st.sidebar.file_uploader("Upload text conversation here (filetype .csv): ")
 
+
+# Process the imported CSV file. Return cleaned dataframe, path to dataframe, and the sender_name
 def process_file(uploaded_file): 
     with tempfile.NamedTemporaryFile(mode='w+', suffix=".csv", delete=False) as temp_file:
             data_str = uploaded_file.getvalue().decode('utf-8')
@@ -37,28 +41,11 @@ def process_file(uploaded_file):
 
             df_path = temp_file.name
 
-            # df_incoming = df[df['Type'] == 'Incoming']
-
-            # #This is not necessary but just for sake of simplicity
-            # df_incoming.drop(['Type', 'Attachment', 'Attachment type'], axis=1, inplace=True)
-            # df_outgoing = df[df['Type'] == 'Outgoing']
-            # df_outgoing.drop(['Type', 'Attachment', 'Attachment type'], axis=1, inplace=True)
-
-            # temp_file_path_incoming, temp_file_path_outgoing = None, None
-
-            # with tempfile.NamedTemporaryFile(mode='w+', suffix=".csv", delete=False) as temp_file_incoming:
-            #     df_incoming.to_csv(temp_file_incoming, index=False)
-            #     temp_file_incoming.flush()
-            #     temp_file_path_incoming = temp_file_incoming.name
-
-            # with tempfile.NamedTemporaryFile(mode='w+', suffix=".csv", delete=False) as temp_file_outgoing:
-            #     df_outgoing.to_csv(temp_file_outgoing, index=False)
-            #     temp_file_outgoing.flush()
-            #     temp_file_path_outgoing = temp_file_outgoing.name
-
             return df, df_path, sender_name
-    
-def initialize_agent(file_name):
+
+
+# Initialize a CSV agent based on the given file name
+def initialize_CSV_agent(file_name):
     return create_csv_agent(
         OpenAI(temperature=0),
         file_name, 
@@ -73,27 +60,43 @@ def click_button():
 if 'button' not in st.session_state:
     st.session_state.button = False
 
+
+# Toggle for if acting as the recipient or the sender based on given CSV
 default_persona = True
 
+
+# Template for part 1 of pipeline, for CSV.
+csv_template = None
+with open("Prompts/csv_prompt") as csv_prompt:
+    csv_template = csv_prompt.read().replace('\n',' ')
+
+csv_prompt = PromptTemplate(input_variables = ['input'], template = csv_template)
+
+# Once the file is imported 
 if file: 
-    #df_incoming, df_outgoing, file_path_incoming, file_path_outgoing, sender_name = process_file(file)
+
     df, df_path, sender_name = process_file(file)
-    
-    st.button('Toggle sender persona', on_click=click_button)
+
+    # Create button for toggling the sender persona
+    st.button('Toggle response persona', on_click=click_button)
 
     if st.session_state.button:
-        # The message and nested widget will remain on the page
-        st.write('You have persona: ' + sender_name)
+        st.write('Response persona: ' + sender_name)
         default_persona = False
+        # csv_prompt.format(input = "Incoming")
 
     else:
-        st.write('You have persona: Default')
+        st.write('Response persona: Default')
         default_persona = True
+        # csv_prompt.format(input = "Outgoing")
     
+    CSV_agent = initialize_CSV_agent(df_path)
     prompt = st.text_input("Enter message")
-    
 
     if prompt: 
-        response = agent.run(prompt)
+        csv_prompt = csv_prompt.format(input = [prompt])
+        print(csv_prompt)
+        print(df)
+        response = CSV_agent.run(csv_prompt)
         st.write(response)
 

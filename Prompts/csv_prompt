@@ -1,0 +1,5 @@
+Given the CSV data, where each row contains a timestamp, a message, and whether it's incoming or outgoing, analyze the provided message and find the corresponding times and responses in the CSV file. Then, summarize how the person responded each time this message or a similar message appeared. Remember, that this message does not have to be exact, but any messages also that are semantically similar or talk about something similar to the one provided. Print out all contextual information that could be useful for future responses. Display the timestamp, the message, and all messages before and after within an appropriate timespan.
+
+Instead of approaching by copying the input, compress and search the table 
+
+Here is the provided message. Again and most importantly, you don't need to find this message exactly, but find any time anything similar was discussed to this message: {input}
