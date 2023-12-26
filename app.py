@@ -8,7 +8,7 @@ import streamlit as st
 #Import OpenAI as main LLM service 
 from langchain.llms import OpenAI
 
-from langchain.agents import create_csv_agent
+from langchain_experimental.agents import create_csv_agent
 from langchain.agents.agent_types import AgentType
 
 #tempfile creation from input
