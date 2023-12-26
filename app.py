@@ -14,21 +14,27 @@ from langchain.agents.agent_types import AgentType
 #tempfile creation from input
 import tempfile
 
+import pandas as pd 
+
 
 os.environ['OPENAI_API_KEY'] = apikey
 
 st.title("Emu-GEN")
-prompt = st.text_input("Enter prompt here: ")
 
 file = st.file_uploader("Upload text conversation here (filetype .csv): ")
 
 if file is not None: 
-    
+
     #Creation of tempfile is necessary, since we are uploading to server 
+
     with tempfile.NamedTemporaryFile(mode='w+', suffix=".csv", delete=False) as f:
         # Convert bytes to a string before writing to the file
         data_str = file.getvalue().decode('utf-8')
         f.write(data_str)
+        f.seek(0)
+        df = pd.read_csv(f)
+        receiver_name = df.iloc[0, 0]
+        prompt = st.text_input("Enter prompt here as " + receiver_name)
         f.flush()
 
     agent = create_csv_agent(
