@@ -33,28 +33,30 @@ def process_file(uploaded_file):
 
             sender_name = df.iloc[0, 0]
 
-            df.drop(['Sender ID', 'Status', 'Replying to', 'Subject', 'Sender Name', 'Edited Date', 'Delivered Date', 'Read Date', 'Service', "Chat Session"], axis=1, inplace=True)
+            df.drop(['Sender ID', 'Status', 'Replying to', 'Subject', 'Sender Name', 'Edited Date', 'Delivered Date', 'Read Date', 'Service', "Chat Session", "Attachment", "Attachment type"], axis=1, inplace=True)
 
-            df_incoming = df[df['Type'] == 'Incoming']
+            df_path = temp_file.name
 
-            #This is not necessary but just for sake of simplicit
-            df_incoming.drop(['Type', 'Attachment', 'Attachment type'], axis=1, inplace=True)
-            df_outgoing = df[df['Type'] == 'Outgoing']
-            df_outgoing.drop(['Type', 'Attachment', 'Attachment type'], axis=1, inplace=True)
+            # df_incoming = df[df['Type'] == 'Incoming']
 
-            temp_file_path_incoming, temp_file_path_outgoing = None, None
+            # #This is not necessary but just for sake of simplicity
+            # df_incoming.drop(['Type', 'Attachment', 'Attachment type'], axis=1, inplace=True)
+            # df_outgoing = df[df['Type'] == 'Outgoing']
+            # df_outgoing.drop(['Type', 'Attachment', 'Attachment type'], axis=1, inplace=True)
 
-            with tempfile.NamedTemporaryFile(mode='w+', suffix=".csv", delete=False) as temp_file_incoming:
-                df_incoming.to_csv(temp_file_incoming, index=False)
-                temp_file_incoming.flush()
-                temp_file_path_incoming = temp_file_incoming.name
+            # temp_file_path_incoming, temp_file_path_outgoing = None, None
 
-            with tempfile.NamedTemporaryFile(mode='w+', suffix=".csv", delete=False) as temp_file_outgoing:
-                df_outgoing.to_csv(temp_file_outgoing, index=False)
-                temp_file_outgoing.flush()
-                temp_file_path_outgoing = temp_file_outgoing.name
+            # with tempfile.NamedTemporaryFile(mode='w+', suffix=".csv", delete=False) as temp_file_incoming:
+            #     df_incoming.to_csv(temp_file_incoming, index=False)
+            #     temp_file_incoming.flush()
+            #     temp_file_path_incoming = temp_file_incoming.name
 
-            return df_incoming, df_outgoing, temp_file_path_incoming, temp_file_path_outgoing, sender_name
+            # with tempfile.NamedTemporaryFile(mode='w+', suffix=".csv", delete=False) as temp_file_outgoing:
+            #     df_outgoing.to_csv(temp_file_outgoing, index=False)
+            #     temp_file_outgoing.flush()
+            #     temp_file_path_outgoing = temp_file_outgoing.name
+
+            return df, df_path, sender_name
     
 def initialize_agent(file_name):
     return create_csv_agent(
@@ -71,22 +73,22 @@ def click_button():
 if 'button' not in st.session_state:
     st.session_state.button = False
 
-other = False
+default_persona = True
 
 if file: 
-    df_incoming, df_outgoing, file_path_incoming, file_path_outgoing, sender_name = process_file(file)
-
+    #df_incoming, df_outgoing, file_path_incoming, file_path_outgoing, sender_name = process_file(file)
+    df, df_path, sender_name = process_file(file)
     
     st.button('Toggle sender persona', on_click=click_button)
 
     if st.session_state.button:
         # The message and nested widget will remain on the page
         st.write('You have persona: ' + sender_name)
-        agent = initialize_agent(file_path_incoming)
+        default_persona = False
 
     else:
         st.write('You have persona: Default')
-        agent = initialize_agent(file_path_outgoing)
+        default_persona = True
     
     prompt = st.text_input("Enter message")
     
@@ -94,50 +96,4 @@ if file:
     if prompt: 
         response = agent.run(prompt)
         st.write(response)
-
-
-# if file is not None: 
-
-#     #Creation of tempfile is necessary, since we are uploading to server 
-#     with tempfile.NamedTemporaryFile(mode='w+', suffix=".csv", delete=False) as f:
-#         #Convert bytes to a string before writing to the file
-#         data_str = file.getvalue().decode('utf-8')
-#         f.write(data_str)
-
-
-#         #Adding input as receiver
-#         f.seek(0)
-#         df = pd.read_csv(f)
-#         receiver_name = df.iloc[0, 0]
-#         prompt = st.text_input("Enter prompt here as " + receiver_name)
-#         f.flush()
-
-#     agent = create_csv_agent(
-#         OpenAI(temperature=0),
-#         f.name, 
-#         verbose=True,
-#         agent_type=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
-#     )
-
-#     if prompt: 
-#         response = agent.run(prompt)
-#         st.write(response)
-
-# else: 
-#     st.markdown("*Knowledge file must be uploaded to continue.*")
-
-
-# title_template = PromptTemplate(
-#     input_variables = ['topic'], 
-
-#     template = open('Prompts/default_prompt', 'r').read()
-# )
-
-
-# llm = OpenAI(temperature = 0.4)
-# title_chain = LLMChain(llm=llm, prompt = title_template, verbose = True)
-
-# if prompt: 
-#     response = title_chain.run(topic = prompt)
-#     st.write(response)
 
