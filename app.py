@@ -1,7 +1,15 @@
+#Import OS to setup API key
 import os 
 from apikey import apikey
+
+#Streamlit for UI/APP interface
 import streamlit as st 
+
+#Import OpenAI as main LLM service 
 from langchain.llms import OpenAI
+
+from langchain.agents import create_csv_agent
+from langchain.agents.agent_types import AgentType
 
 from langchain.chains import LLMChain, SimpleSequentialChain
 from langchain.prompts import PromptTemplate 
@@ -14,12 +22,20 @@ from langchain.vectorstores import Chroma
 
 os.environ['OPENAI_API_KEY'] = apikey
 
-st.title("StuDOC-GEN")
-prompt = st.text_input("PROMPT HERE: ")
+st.title("Emu-GEN")
+prompt = st.text_input("Enter prompt here: ")
+file = st.file_uploader("Upload text conversation here (filetype .csv): ")
+agent = create_csv_agent(
+    OpenAI(temperature=0, model="gpt-3.5-turbo-0613"),
+    "titanic.csv",
+    verbose=True,
+    agent_type=AgentType.OPENAI_FUNCTIONS,
+)
 
 title_template = PromptTemplate(
     input_variables = ['topic'], 
-    template = 'I want you to act as an essay writer. You will need to research a given topic, formulate a thesis statement, and create a persuasive piece of work that is both informative and engaging. The essay must be of at least 1000 words. My first request is about {topic}'
+
+    template = open('Prompts/default_prompt', 'r').read()
 )
 
 
