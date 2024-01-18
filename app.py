@@ -9,7 +9,10 @@ import streamlit as st
 from langchain.llms import OpenAI
 from langchain.agents import create_csv_agent
 from langchain.prompts import PromptTemplate
+from langchain.agents import initialize_agent
 from langchain.chains import LLMChain
+
+
 
 from langchain.agents.agent_types import AgentType
 
@@ -28,6 +31,8 @@ file = st.sidebar.file_uploader("Upload text conversation here (filetype .csv): 
 
 # Process the imported CSV file. Return cleaned dataframe, path to dataframe, and the sender_name
 def process_file(uploaded_file): 
+
+    # streamlit handle uploaded file
     with tempfile.NamedTemporaryFile(mode='w+', suffix=".csv", delete=False) as temp_file:
             data_str = uploaded_file.getvalue().decode('utf-8')
             temp_file.write(data_str)
@@ -53,6 +58,8 @@ def initialize_CSV_agent(file_name):
         agent_type=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
     )
 
+# def initialize_assistant_agent():
+#     return initialize_agent(OpenAI(temperature = 0), agent="zero-shot-react-description", verbose=True)
 
 #Coding Button Functionality 
 def click_button():
@@ -71,6 +78,14 @@ with open("Prompts/csv_prompt") as csv_prompt:
     csv_template = csv_prompt.read().replace('\n',' ')
 
 csv_prompt = PromptTemplate(input_variables = ['input'], template = csv_template)
+
+
+# Template for part 2 of pipeline, for assistant.
+assistant_template = None
+with open("Prompts/assistant_prompt") as assistant_prompt:
+    assistant_template = assistant_prompt.read().replace('\n',' ')
+# assistant_prompt = PromptTemplate(input_variables = ['input'], template = assistant_template)
+
 
 # Once the file is imported 
 if file: 
@@ -91,12 +106,15 @@ if file:
         # csv_prompt.format(input = "Outgoing")
     
     CSV_agent = initialize_CSV_agent(df_path)
+    # llm = initialize_assistant_agent()
     prompt = st.text_input("Enter message")
 
     if prompt: 
         csv_prompt = csv_prompt.format(input = [prompt])
-        print(csv_prompt)
-        print(df)
+        # chain = LLMChain(llm=llm, prompt = assistant_prompt)
+        # print(prompt)
         response = CSV_agent.run(csv_prompt)
+        # response = chain.run(input = [prompt])
+        # print(response)
         st.write(response)
 

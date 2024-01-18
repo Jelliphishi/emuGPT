@@ -26,6 +26,15 @@ Thought Process on Model Architecture:
     2. Instead, what if we used cosine similarity to easily find situations where they were similar? Approach #1 may be slow for larger datasets
     
 
+---------
+
+Update Jan. 18
+
+1. RAG with PDFs? See if there's a contextual way to separate the left and right hand side of the PDFs. There's no time information, but otherwise will work well. 
+
+
+
+
     
 
 

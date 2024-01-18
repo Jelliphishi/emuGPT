@@ -8,7 +8,9 @@ For the following commands please give the following output.
 
 GENERATE_TRENDS_INCOMING
 
-Return the most noticeable trends in vernacular of the incoming messages. For example, 
+Return the most noticeable trends in vernacular of the incoming messages. Below are a list of examples.
+
+1. 
 
 [Example CSV Data]
 "2021-07-15 10:30:14", "i finna kill you and yo momma", "Outgoing"
@@ -19,7 +21,6 @@ Return the most noticeable trends in vernacular of the incoming messages. For ex
 "2021-07-17 2:20:00", "Sir! Let’s just calm down now!", "Incoming"
 
 [Example Output]
-
 The "Outgoing" messages from the provided data exhibit the following noticeable trends in vernacular:
 
 Use of Slang and Informal Language: The messages heavily rely on slang terms and informal language. Words like "finna", "cuh" and "on gang on blud" are prominent.
@@ -38,3 +39,56 @@ With these trends, I am able to generate the following example messages that the
 “whip out my glock everyday cuh 24/7”
 “i love chief keef and yo momma i be in bed wit her cuh”
 “cuh blud finna kill you yuh” 
+
+
+2. 
+[Example CSV Data]
+"2021-08-05 14:20:00", "yo, finna run these streets tonight cuh", "Outgoing"
+"2021-08-06 08:15:30", "Please reconsider your actions! This is concerning.", "Incoming"
+"2021-08-06 21:45:10", "ain't nobody gonna stop me, on god", "Outgoing"
+"2021-08-07 10:00:20", "Your safety is important, let's talk about this.", "Incoming"
+"2021-08-07 15:30:55", "cuh, this my life, finna live it up", "Outgoing"
+"2021-08-07 18:00:40", "Is there someone you can talk to? I'm here to listen.", "Incoming"
+
+[Example Output]
+The "Outgoing" messages from this set of data continue to show:
+
+Use of Slang and Informal Language: Phrases like "finna run these streets," "on god," and "cuh" are used frequently, demonstrating a preference for street slang and informal expressions.
+Assertive and Defiant Tone: The messages are not just aggressive but also carry a tone of defiance, such as "ain't nobody gonna stop me."
+Lifestyle and Identity References: The messages reflect a lifestyle and identity associated with street culture, as seen in phrases like "finna run these streets" and "this my life."
+Casual and Unstructured Language: Similar to the first dataset, these messages lack formal punctuation and grammatical structure, indicating a casual mode of communication.
+Generated Example Messages for User Input:
+
+"streets is where I be at, on blud"
+"ain’t no fear in my heart, finna face it all cuh"
+"every night, we out here, living it raw and real, on god"
+These generated messages align with the trends observed in the outgoing messages of the dataset, reflecting a specific subcultural vernacular and lifestyle.
+
+
+3. 
+
+[Example CSV Data]:
+
+"2021-09-10 09:00:00", "Just finished my morning run, feeling great!", "Outgoing"
+"2021-09-10 09:15:00", "That's awesome! Keep up the good work.", "Incoming"
+"2021-09-11 20:30:00", "Ugh, so much homework to do tonight.", "Outgoing"
+"2021-09-11 20:45:00", "You can do it! Just take it one step at a time.", "Incoming"
+"2021-09-12 18:00:00", "Binge-watched the entire season today, lol", "Outgoing"
+"2021-09-12 18:20:00", "Which show? I need a new series to start!", "Incoming"
+
+[Example Output]
+The "Outgoing" messages in this dataset show:
+
+Positive and Casual Tone: The messages convey a sense of positivity, as seen in "feeling great!" and an informal, friendly tone.
+Reflecting Daily Activities and Emotions: The messages often reflect everyday activities and emotions, such as going for a run or dealing with homework.
+Use of Contemporary Internet Slang: There's the use of internet slang like "lol" but in a more light-hearted and casual context.
+Conversational and Relatable Content: The messages are relatable and conversational, indicating a more mainstream style of texting.
+Generated Example Messages for User Input:
+
+"Can’t wait for the weekend, planning a hiking trip!"
+"Just tried a new recipe, turned out amazing! 😊"
+"Had a chill day, watched movies and relaxed."
+These generated messages are more mainstream and casual, reflecting everyday activities and positive emotions, and are indicative of a different texting style compared to the previous dataset.
+
+
+
